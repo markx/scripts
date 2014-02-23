@@ -1,0 +1,22 @@
+#!/usr/bin/bash
+
+cmd="tmux -2" #tmux path
+session=$USER #session name
+
+$cmd has -t $session 2> /dev/null
+
+if [ $? != 0 ]; then
+    $cmd new -s $session -n shell -d	#window 1
+    $cmd neww -t $session -n ranger "ranger"
+    $cmd neww -t $session -n music "cmus" #window 3
+#    $cmd neww -t $session -n goagent "goagent"
+    $cmd selectw -t $session:1
+fi
+
+if [ "$1" == "-d" ]; then
+    exit 0
+fi
+
+$cmd attach -t $session
+
+exit 0
