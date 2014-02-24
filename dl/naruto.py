@@ -29,7 +29,7 @@ def main(start, end=None):
     
     print("downloading from %d to %d" %(start, end))
     sleep(2)
-    for chapter in range(start,end):
+    for chapter in range(start,end+1):
         content= s.get("%s%d/index_0.html" %(url, chapter)).content.decode()
         re.findall('<img src="(http://s2.fzdm.org/\d+/\d+/\d+.jpg)" id="mhpic"', content)
         pic0=re.findall('<img\ssrc="(http://.+fzdm\.org.+\.jpg).*id="mhpic"', content)[0]
@@ -45,21 +45,20 @@ def main(start, end=None):
                 print("%d-%s.jpg exists!" %(chapter, '1'))
     
     
-            indexall=re.findall('<a href="index_(\d+)\.html', content)[1:]
+            indexall=re.findall('<a href=\"index_(\d+)\.html\">', content)
             for index in indexall:
-                #starting from 1 instead of 0
-                index=str(int(index)+1)
-                if exists("naruto/%d-%s.jpg" %(chapter, index)):
-                    print("%d-%s.jpg exists!" %(chapter, index))
+                index=int(index)
+                if exists("naruto/%d-%d.jpg" %(chapter, index+1)):
+                    print("%d-%d.jpg exists!" %(chapter, index+1))
                     continue
-                c= s.get("%s%d/index_%s.html" %(url, chapter, index)).content.decode()
+                c= s.get("%s%d/index_%d.html" %(url, chapter, index)).content.decode()
                 pic=re.findall('<img\ssrc="(http://.+fzdm\.org.+\.jpg).*id="mhpic"', c)[0]
                 if pic:
                     print("downloading "+pic+"")
                     c=s.get(pic).content
-                    with open("naruto/%d-%s.jpg" %(chapter, index), "wb") as f:
+                    with open("naruto/%d-%d.jpg" %(chapter, index+1), "wb") as f:
                         f.write(c)
-                    print("%d %s downloaded!\n" %(chapter, index))
+                    print("%d %s downloaded!\n" %(chapter, index+1))
         
                 sleep(0.3)
 
