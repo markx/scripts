@@ -7,7 +7,7 @@ from os.path import exists
 from time import sleep
 import argparse
 
-def main(start, end=None):
+def main(start, end):
     s=requests.Session()
     s.headers['User-Agent']='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.107 Safari/537.36'
 
@@ -21,6 +21,8 @@ def main(start, end=None):
             content= s.get(url).content.decode()
             end=re.findall(r'a\shref\=\"(\d{3,})/\"\stitle',content)[0]
             end=int(end)
+            if start==-1:
+                start=end
             print("The latest chapter is %d" %end)
         except Exception as e:
             print("cannot get the latest chapter, set it manully")
@@ -64,7 +66,7 @@ def main(start, end=None):
 
 if __name__ == "__main__":
     arg=argparse.ArgumentParser(description="Download naruto")
-    arg.add_argument('start', nargs='?',default=630, type=int, help="start chapter")
+    arg.add_argument('start', nargs='?',default=-1, type=int, help="start chapter")
     arg.add_argument('end' , nargs='?',default=-1, type=int ,help="end chapter")
     args=arg.parse_args()
     main(args.start, args.end)
