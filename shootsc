@@ -10,7 +10,7 @@ notify-send 'print screen: select !'&& scrot -s $filename -e 'mv $f ~/temp/'&& n
 -d)
 pic="`date|md5sum|head -c 6`.png"
 notify-send 'select an area and upload to Dropbox !'
-scrot -s $pic -e 'mv $f ~/Dropbox/Public/screenshots/ && echo http://dl.dropbox.com/u/84471951/screenshots/$n | xsel -b -i -l /dev/null '&& notify-send "url copyed $pic" 
+scrot -s $pic -e 'mv $f ~/Dropbox/Public/screenshots/ && echo https://dl.dropbox.com/u/84471951/screenshots/$n | xsel -b -i -l /dev/null '&& notify-send "url copyed $pic" 
 ;;
 
 *)
